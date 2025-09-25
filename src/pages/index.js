@@ -295,8 +295,8 @@ export default function Home() {
         <FooterContent>
           <FooterColumn>
             <FooterTitle>Contact Us</FooterTitle>
-            <FooterItem>123 Sunset Blvd, Glow City, FL</FooterItem>
-            <FooterItem>(123) 456-7890</FooterItem>
+            <FooterItem>150 Piccadilly,W1J 9BR, London, UK</FooterItem>
+            <FooterItem>(+44) 020-7890345</FooterItem>
             <FooterItem>info@sunshinestudio.com</FooterItem>
           </FooterColumn>
 
