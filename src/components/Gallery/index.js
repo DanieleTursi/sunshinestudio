@@ -1,7 +1,11 @@
 "use client";
 import { useState } from "react";
-import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import styled, { keyframes } from "styled-components";
+
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
 
 const GallerySection = styled.section`
   background: #fffaf3;
@@ -40,7 +44,7 @@ const GalleryGrid = styled.div`
   }
 `;
 
-const GalleryItem = styled(motion.div)`
+const GalleryItem = styled.div`
   overflow: hidden;
   border-radius: 15px;
   cursor: pointer;
@@ -59,7 +63,7 @@ const GalleryItem = styled(motion.div)`
   }
 `;
 
-const Overlay = styled(motion.div)`
+const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.85);
@@ -68,14 +72,16 @@ const Overlay = styled(motion.div)`
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  animation: ${fadeIn} 0.3s ease forwards;
 `;
 
-const EnlargedImage = styled(motion.img)`
+const EnlargedImage = styled.img`
   max-width: 90%;
   max-height: 80vh;
   border-radius: 20px;
   object-fit: contain;
-  box-shadow: 0 0 40px rgba(255, 136, 0, 0.4);
+
+  animation: ${fadeIn} 0.3s ease forwards;
 `;
 
 const CloseButton = styled.button`
@@ -85,12 +91,13 @@ const CloseButton = styled.button`
   background: rgba(255, 255, 255, 0.25);
   border: none;
   color: white;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  padding: 12px 16px;
+
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  width: 50px;
+  height: 50px;
   transition: background 0.3s ease, transform 0.2s ease;
   z-index: 10000;
 
@@ -120,37 +127,18 @@ export default function Gallery() {
       <Title>Our Gallery</Title>
       <GalleryGrid>
         {images.map((src, index) => (
-          <GalleryItem
-            key={index}
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setSelected(src)}
-          >
+          <GalleryItem key={index} onClick={() => setSelected(src)}>
             <img src={src} alt={`Gallery image ${index + 1}`} />
           </GalleryItem>
         ))}
       </GalleryGrid>
 
-      <AnimatePresence>
-        {selected && (
-          <Overlay
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}
-          >
-            <EnlargedImage
-              src={selected}
-              alt="Enlarged view"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            <CloseButton onClick={() => setSelected(null)}>×</CloseButton>
-          </Overlay>
-        )}
-      </AnimatePresence>
+      {selected && (
+        <Overlay onClick={() => setSelected(null)}>
+          <EnlargedImage src={selected} alt="Enlarged view" />
+          <CloseButton onClick={() => setSelected(null)}>×</CloseButton>
+        </Overlay>
+      )}
     </GallerySection>
   );
 }
