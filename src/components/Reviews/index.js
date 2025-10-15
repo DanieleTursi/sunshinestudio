@@ -1,11 +1,25 @@
 "use client";
-import styled from "styled-components";
-import { motion } from "framer-motion";
+import styled, { keyframes } from "styled-components";
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const ReviewsSection = styled.section`
   background: #fffdf8;
   padding: 100px 8%;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 60px 6%;
+  }
 `;
 
 const Title = styled.h2`
@@ -23,14 +37,14 @@ const Title = styled.h2`
 const ReviewsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
+  gap: 30px;
 
   @media (max-width: 768px) {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 15px;
+    gap: 20px;
     padding-bottom: 10px;
 
     &::-webkit-scrollbar {
@@ -39,32 +53,53 @@ const ReviewsGrid = styled.div`
   }
 `;
 
-const ReviewCard = styled(motion.div)`
+const ReviewCard = styled.div`
   background: #fffaf2;
-  border-left: 4px solid #ff8800;
-  border-radius: 12px;
-  padding: 25px;
+  border-radius: 20px;
+  padding: 35px 30px;
   text-align: left;
-  font-style: italic;
   color: #333;
-  box-shadow: 0 6px 18px rgba(255, 136, 0, 0.1);
-  transition: transform 0.3s ease;
+  position: relative;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   scroll-snap-align: center;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(255, 136, 0, 0.35);
   }
+
+  &::before {
+    content: "“";
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ff8800;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+  }
+
+  animation: ${fadeInUp} 0.6s ease forwards;
+  animation-delay: var(--delay);
 
   @media (max-width: 768px) {
     min-width: 80%;
+    padding: 25px 20px;
+
+    &::before {
+      font-size: 2.5rem;
+      top: 10px;
+      left: 15px;
+    }
   }
 `;
 
 const Reviewer = styled.p`
-  font-weight: 600;
-  margin-top: 15px;
+  font-weight: 700;
+  margin-top: 20px;
   color: #d16b00;
   font-style: normal;
+  font-size: 1rem;
 `;
 
 export default function Reviews() {
@@ -92,13 +127,7 @@ export default function Reviews() {
       <Title>What Our Clients Say</Title>
       <ReviewsGrid>
         {reviews.map((r, i) => (
-          <ReviewCard
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-          >
+          <ReviewCard key={i} style={{ "--delay": `${i * 0.1}s` }}>
             {r.text}
             <Reviewer>{r.author}</Reviewer>
           </ReviewCard>

@@ -32,6 +32,10 @@ const Logo = styled.div`
   &:hover {
     color: #d16b00;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const NavLinks = styled.div`

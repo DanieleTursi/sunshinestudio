@@ -1,11 +1,14 @@
 "use client";
 import styled from "styled-components";
-import { motion } from "framer-motion";
 
 const ServicesSection = styled.section`
   padding: 100px 8%;
   background: #fffaf3;
   text-align: center;
+
+  @media (max-width: 900px) {
+    padding: 60px 6%;
+  }
 `;
 
 const Title = styled.h2`
@@ -22,31 +25,42 @@ const Title = styled.h2`
 
 const ServicesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
   justify-items: center;
+  max-width: 900px;
+  margin: 0 auto;
 
   @media (max-width: 900px) {
     display: flex;
-    flex-direction: row;
-    overflow-x: auto;
+    flex-direction: column;
     gap: 20px;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 10px;
+    width: 80%;
+    height: 400px; /* adjust as needed */
+    overflow-y: auto;
+    padding-right: 10px;
+    scroll-behavior: smooth;
+
+    /* Optional: hide default scrollbar on mobile */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 136, 0, 0.5);
+      border-radius: 3px;
+    }
   }
 `;
 
-const ServiceCard = styled(motion.div)`
+const ServiceCard = styled.div`
   background: white;
   border-radius: 20px;
   box-shadow: 0 6px 20px rgba(255, 136, 0, 0.15);
-  padding: 40px 25px;
+  padding: 20px;
   width: 100%;
   max-width: 300px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  scroll-snap-align: center;
-  flex-shrink: 0;
 
   &:hover {
     transform: translateY(-5px);
@@ -109,13 +123,7 @@ export default function Services() {
       <Title>Our Services</Title>
       <ServicesGrid>
         {services.map((service, index) => (
-          <ServiceCard
-            key={index}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-          >
+          <ServiceCard key={index}>
             <h3>{service.title}</h3>
             <p>{service.desc}</p>
           </ServiceCard>

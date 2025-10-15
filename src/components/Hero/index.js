@@ -1,6 +1,5 @@
 "use client";
 import styled, { keyframes } from "styled-components";
-import { motion } from "framer-motion";
 
 // --- Animations ---
 const fadeIn = keyframes`
@@ -10,30 +9,33 @@ const fadeIn = keyframes`
 
 // --- Styled Components ---
 const HeroSection = styled.section`
+  position: relative;
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 120px 8% 60px;
-  background: linear-gradient(135deg, #ffe9b8, #ffd6a5, #fff1c1);
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
   overflow: hidden;
-  flex-wrap: wrap;
-  gap: 40px;
 
-  @media (max-width: 900px) {
-    flex-direction: column-reverse;
-    text-align: center;
-    padding: 120px 6% 80px;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("/images/tanning-hero.jpg") center/cover no-repeat;
+    z-index: 0; /* behind content */
   }
 `;
 
-const TextContent = styled.div`
-  flex: 1;
+const HeroContent = styled.div`
+  position: relative; /* ensures content is above the ::before */
+  z-index: 1;
   animation: ${fadeIn} 1s ease forwards;
+  color: #fff;
+  max-width: 800px;
 
   h1 {
     font-size: 3rem;
-    color: #ff8800;
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 20px;
@@ -44,14 +46,12 @@ const TextContent = styled.div`
   }
 
   p {
-    font-size: 1.1rem;
-    color: #444;
-    max-width: 500px;
+    font-size: 1.2rem;
+    line-height: 1.5;
     margin-bottom: 30px;
 
     @media (max-width: 768px) {
       font-size: 1rem;
-      margin: 0 auto 25px;
     }
   }
 `;
@@ -76,53 +76,19 @@ const CTAButton = styled.a`
   }
 `;
 
-const ImageArea = styled(motion.div)`
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    width: 90%;
-    max-width: 500px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    border: 4px solid white;
-  }
-
-  @media (max-width: 900px) {
-    img {
-      width: 70%;
-      max-width: 350px;
-    }
-  }
-`;
-
 // --- Component ---
 export default function Hero() {
   return (
     <HeroSection id="home">
-      <TextContent>
-        <h1>Shine with Confidence ✨</h1>
+      <HeroContent>
+        <h1>Shine with Confidence</h1>
         <p>
           Welcome to <strong>Sunshine Studio</strong> — where your hair glows as
           bright as your personality. Discover expert stylists, vibrant colors,
           and care that makes you shine inside and out.
         </p>
         <CTAButton href="#contact">Book Now</CTAButton>
-      </TextContent>
-
-      <ImageArea
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-      >
-        <img
-          src="https://images.unsplash.com/photo-1605733160314-4ee3b4e9ef92?q=80&w=800"
-          alt="Sunshine Studio Hair Model"
-        />
-      </ImageArea>
+      </HeroContent>
     </HeroSection>
   );
 }

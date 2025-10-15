@@ -2,12 +2,15 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 
 const GallerySection = styled.section`
   background: #fffaf3;
   padding: 100px 8%;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 60px 6%;
+  }
 `;
 
 const Title = styled.h2`
@@ -24,15 +27,16 @@ const Title = styled.h2`
 
 const GalleryGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 25px;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  max-width: 800px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 20px;
   }
 `;
 
@@ -58,7 +62,7 @@ const GalleryItem = styled(motion.div)`
 const Overlay = styled(motion.div)`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
@@ -71,30 +75,33 @@ const EnlargedImage = styled(motion.img)`
   max-height: 80vh;
   border-radius: 20px;
   object-fit: contain;
-  box-shadow: 0 0 30px rgba(255, 136, 0, 0.3);
+  box-shadow: 0 0 40px rgba(255, 136, 0, 0.4);
 `;
 
 const CloseButton = styled.button`
   position: fixed;
-  top: 40px;
-  right: 40px;
-  background: rgba(255, 255, 255, 0.2);
+  top: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.25);
   border: none;
   color: white;
-  font-size: 2rem;
-  padding: 8px 14px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 12px 16px;
   border-radius: 50%;
   cursor: pointer;
-  transition: 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  transition: background 0.3s ease, transform 0.2s ease;
   z-index: 10000;
 
   &:hover {
-    background: rgba(255, 136, 0, 0.8);
+    background: rgba(255, 136, 0, 0.9);
+    transform: scale(1.1);
   }
 
   @media (max-width: 768px) {
-    top: 25px;
-    right: 25px;
+    top: 20px;
+    right: 20px;
   }
 `;
 
@@ -140,9 +147,7 @@ export default function Gallery() {
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
             />
-            <CloseButton onClick={() => setSelected(null)}>
-              <X size={26} />
-            </CloseButton>
+            <CloseButton onClick={() => setSelected(null)}>×</CloseButton>
           </Overlay>
         )}
       </AnimatePresence>
